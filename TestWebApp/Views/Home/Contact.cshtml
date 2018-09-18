@@ -15,3 +15,30 @@
     <strong>Support:</strong> <a href="mailto:Support@example.com">Support@example.com</a><br />
     <strong>Marketing:</strong> <a href="mailto:Marketing@example.com">Marketing@example.com</a>
 </address>
+
+@*<form method="post" action="/Home/Contact">*@
+@*@using (Html.BeginForm("Contact", "Home", FormMethod.Post))
+        {
+            <div class="row">
+                <label>LED state: </label>
+                <input type="checkbox" name="ledState" id="ledState" value="true" />
+            </div>
+            <div class="row">
+                <input type="submit" value="Submit" class="btn" />
+            </div>
+    }*@
+
+@*</form>*@
+
+@using (Html.BeginForm("Contact", "Home", FormMethod.Post))
+{
+    <div class="row">
+        @Html.Label("LED state: ")
+        @Html.CheckBox("ledState", Convert.ToBoolean(ViewData["LedState"]))
+    </div>
+    <div class="row">
+        <button type="submit" class="btn">
+            <span class="glyphicon glyphicon-cloud-upload"></span> Submit
+        </button>
+    </div>
+}

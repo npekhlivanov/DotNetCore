@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using TestWebApp.Models;
-#if !DEBUG
+//#if !DEBUG
 using Unosquare.RaspberryIO;
 using Unosquare.RaspberryIO.Gpio;
-#endif
+//#endif
 
 namespace TestWebApp.Controllers
 {
@@ -22,17 +22,21 @@ namespace TestWebApp.Controllers
 
         public IActionResult About()
         {
-            ViewData["Message"] = "Your application description page.";
+#if DEBUG
+            ViewData["Message"] = "System information not available in Debug mode";
             return View();
+#else
+            ViewData["Message"] = "System information";
+            AboutViewModel viewModel = new AboutViewModel
+            {
+                RaspberryPiInfo = Pi.Info
+            };
+            return View(viewModel);
+#endif
         }
 
         public IActionResult Contact()
         {
-#if DEBUG
-            ViewData["Message"] = "System information not available in Debug mode"; 
-#else
-            ViewData["Message"] = string.Format("Model: {0}, Hardware: {1}, SN: {2}", Pi.Info.ModelName, Pi.Info.Hardware, Pi.Info.Serial);
-#endif
             ViewData["LedState"] = true.ToString();
 
             return View();
@@ -50,11 +54,27 @@ namespace TestWebApp.Controllers
             var pin = Pi.Gpio.Pin21;
             pin.PinMode = GpioPinDriveMode.Output;
             pin.Write(ledState);
+#else
+            ViewData["Message"] = "Function not available in Debug mode";
 #endif
             //var ledState2 = Request.Form["ledState"];
             //ViewData["LedState"] = (ledState ?? false).ToString();
             ViewData["LedState"] = ledState.ToString();
             return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Shutdown()
+        {
+#if !DEBUG
+            Pi.Shutdown();
+            ViewData["Message"] = "Shutdown invoked";
+#else
+            ViewData["Message"] = "Function not available in Debug mode";
+#endif
+
+            return View("Contact");
         }
 
         public IActionResult Privacy()

@@ -1,7 +1,155 @@
-﻿@{
+﻿@model TestWebApp.Models.AboutViewModel
+@{
     ViewData["Title"] = "About";
 }
 <h2>@ViewData["Title"]</h2>
 <h3>@ViewData["Message"]</h3>
 
-<p>Use this area to provide additional information.</p>
+<p/>
+<div class="form-group">
+    <div class="row">
+        <div class="col-xs-4 col-sm-3">
+            @Html.LabelFor(m => m.RaspberryPiInfo.CpuArchitecture)
+        </div>
+        <div class="col-xs-8 col-sm-9">
+            @Html.DisplayTextFor(m => m.RaspberryPiInfo.CpuArchitecture)
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-4 col-sm-3">
+            @Html.LabelFor(m => m.RaspberryPiInfo.CpuImplementer)
+        </div>
+        <div class="col-xs-8 col-sm-9">
+            @Html.DisplayTextFor(m => m.RaspberryPiInfo.CpuImplementer)
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-4 col-sm-3">
+            @Html.Label("Cpu Part Code")
+        </div>
+        <div class="col-xs-8 col-sm-9">
+            @Html.DisplayTextFor(m => m.RaspberryPiInfo.CpuPart)
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-4 col-sm-3">
+            @Html.LabelFor(m => m.RaspberryPiInfo.CpuRevision)
+        </div>
+        <div class="col-xs-8 col-sm-9">
+            @Html.DisplayTextFor(m => m.RaspberryPiInfo.CpuRevision)
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-4 col-sm-3">
+            @Html.LabelFor(m => m.RaspberryPiInfo.CpuVariant)
+        </div>
+        <div class="col-xs-8 col-sm-9">
+            @Html.DisplayTextFor(m => m.RaspberryPiInfo.CpuVariant)
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-4 col-sm-3">
+            @Html.Label("Supported CPU Features")
+        </div>
+        <div class="col-xs-8 col-sm-9">
+            @(Model != null && Model.RaspberryPiInfo != null ? string.Join(';', Model.RaspberryPiInfo.Features) : "-")
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-4 col-sm-3">
+            @Html.LabelFor(m => m.RaspberryPiInfo.Hardware)
+        </div>
+        <div class="col-xs-8 col-sm-9">
+            @Html.DisplayTextFor(m => m.RaspberryPiInfo.Hardware)
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-4 col-sm-3">
+            @Html.LabelFor(m => m.RaspberryPiInfo.InstalledRam)
+        </div>
+        <div class="col-xs-8 col-sm-9">
+            @(Model != null && Model.RaspberryPiInfo != null ? (Model.RaspberryPiInfo.InstalledRam / 1024).ToString() + "KB" : "-")
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-4 col-sm-3">
+            @Html.LabelFor(m => m.RaspberryPiInfo.IsLittleEndian)
+        </div>
+        <div class="col-xs-8 col-sm-9">
+            @Html.DisplayTextFor(m => m.RaspberryPiInfo.IsLittleEndian)
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-4 col-sm-3">
+            @Html.Label("CPU Model Name")
+        </div>
+        <div class="col-xs-8 col-sm-9">
+            @Html.DisplayTextFor(m => m.RaspberryPiInfo.ModelName)
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-4 col-sm-3">
+            @Html.LabelFor(m => m.RaspberryPiInfo.OperatingSystem)
+        </div>
+        <div class="col-xs-8 col-sm-9">
+            @(Model != null && Model.RaspberryPiInfo != null ? Model.RaspberryPiInfo.OperatingSystem.ToString() : "-")
+            
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-4 col-sm-3">
+            @Html.LabelFor(m => m.RaspberryPiInfo.ProcessorCount)
+        </div>
+        <div class="col-xs-8 col-sm-9">
+            @Html.DisplayTextFor(m => m.RaspberryPiInfo.ProcessorCount)
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-4 col-sm-3">
+            @Html.LabelFor(m => m.RaspberryPiInfo.RaspberryPiVersion)
+        </div>
+        <div class="col-xs-8 col-sm-9">
+            @(Model != null && Model.RaspberryPiInfo != null ? Model.RaspberryPiInfo.RaspberryPiVersion.ToString() : "-")
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-4 col-sm-3">
+            @Html.Label("Hardware Revision")
+        </div>
+        <div class="col-xs-8 col-sm-9">
+            @Html.DisplayTextFor(m => m.RaspberryPiInfo.Revision)
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-4 col-sm-3">
+            @Html.Label("Serial Number")
+        </div>
+        <div class="col-xs-8 col-sm-9">
+            @Html.DisplayTextFor(m => m.RaspberryPiInfo.Serial)
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-4 col-sm-3">
+            @Html.Label("Uptime")
+        </div>
+        <div class="col-xs-8 col-sm-9">
+            @(Model != null && Model.RaspberryPiInfo != null ? Model.RaspberryPiInfo.UptimeTimeSpan.ToString(@"d\d\ hh\:mm\:ss") : "-")
+        </div>
+    </div>    <div class="row">
+        <div class="col-xs-4 col-sm-3">
+            @Html.LabelFor(m => m.RaspberryPiInfo.WiringPiBoardRevision)
+        </div>
+        <div class="col-xs-8 col-sm-9">
+            @Html.DisplayTextFor(m => m.RaspberryPiInfo.WiringPiBoardRevision)
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-4 col-sm-3">
+            @Html.LabelFor(m => m.RaspberryPiInfo.WiringPiVersion)
+        </div>
+        <div class="col-xs-8 col-sm-9">
+            @(Model != null && Model.RaspberryPiInfo != null ? Model.RaspberryPiInfo.WiringPiVersion.ToString() : "-")
+
+        </div>
+    </div>
+</div>

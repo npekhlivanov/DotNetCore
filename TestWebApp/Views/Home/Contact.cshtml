@@ -42,3 +42,17 @@
         </button>
     </div>
 }
+
+<p/>
+
+@using (Html.BeginForm("Shutdown", "Home", FormMethod.Post))
+{
+    <div class="row">
+        @Html.Label("Press the button below to invoke Shutdown")
+    </div>
+    <div class="row">
+        <button type="submit" class="btn">
+            <span class="glyphicon glyphicon-off"></span> Shutdown
+        </button>
+    </div>
+}

@@ -1,0 +1,29 @@
+﻿
+@{
+    ViewData["Title"] = "Image";
+}
+
+<h2>@ViewData["Title"]</h2>
+<h3>@ViewData["Message"]</h3>
+
+@*@{
+    if (System.IO.File.Exists("./picture.jpg"))
+    {*@
+        <div class="form-group">
+            <img src="~/picture.jpg" />
+        </div>
+    @*}
+}*@
+
+@using (Html.BeginForm("CaptureImage", "Home", FormMethod.Post))
+{
+    <div class="row">
+        @Html.Label("Press the button to take a picture")
+    </div>
+    <div class="row">
+        <button type="submit" class="btn">
+            <span class="glyphicon glyphicon-camera"></span>Take a picture
+        </button>
+    </div>
+}
+

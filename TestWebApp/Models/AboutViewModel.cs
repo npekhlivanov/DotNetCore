@@ -11,5 +11,9 @@ namespace TestWebApp.Models
     public class AboutViewModel
     {
         public SystemInfo RaspberryPiInfo { get; set; }
+        public List<NetworkAdapterInfo> NetworkAdapterData { get; set; }
+        public string HostName { get; set; }
+        public double CpuTemperature { get; set; }
+        public string ModelInfo { get; set; }
     }
 }

@@ -1,0 +1,52 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27019.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{E8E549CF-BDCC-42EF-B2E2-0A27BDCC2518}"
+	ProjectSection(SolutionItems) = preProject
+		deploy.ps1 = deploy.ps1
+		NuGet.config = NuGet.config
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tools", "tools", "{32931000-53F8-457A-AD1B-2D4F1EE6E6AE}"
+	ProjectSection(SolutionItems) = preProject
+		tools\CommandLine.dll = tools\CommandLine.dll
+		tools\Renci.SshNet.dll = tools\Renci.SshNet.dll
+		tools\SshDeploy.exe = tools\SshDeploy.exe
+		tools\SshDeploy.pdb = tools\SshDeploy.pdb
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{0CC6E4CE-970F-4142-AF10-D44D6EA84E74}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IotCamera", "src\IotCamera\IotCamera.csproj", "{0028AD1B-22E4-4DC9-80BD-061585E4390A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Components", "src\Components\Components.csproj", "{3486ABFC-ED8B-4987-962E-3F7E8B5E3442}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{0028AD1B-22E4-4DC9-80BD-061585E4390A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0028AD1B-22E4-4DC9-80BD-061585E4390A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0028AD1B-22E4-4DC9-80BD-061585E4390A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0028AD1B-22E4-4DC9-80BD-061585E4390A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3486ABFC-ED8B-4987-962E-3F7E8B5E3442}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3486ABFC-ED8B-4987-962E-3F7E8B5E3442}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3486ABFC-ED8B-4987-962E-3F7E8B5E3442}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3486ABFC-ED8B-4987-962E-3F7E8B5E3442}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{32931000-53F8-457A-AD1B-2D4F1EE6E6AE} = {E8E549CF-BDCC-42EF-B2E2-0A27BDCC2518}
+		{0028AD1B-22E4-4DC9-80BD-061585E4390A} = {0CC6E4CE-970F-4142-AF10-D44D6EA84E74}
+		{3486ABFC-ED8B-4987-962E-3F7E8B5E3442} = {0CC6E4CE-970F-4142-AF10-D44D6EA84E74}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {74E20FB4-0DC3-469C-A312-1580C603459B}
+	EndGlobalSection
+EndGlobal

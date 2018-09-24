@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.App" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.1.4" />
     <PackageReference Include="Unosquare.Raspberry.IO" Version="0.17.1" />
     <!-- <RuntimeHostConfigurationOption Include="System.Globalization.Invariant" Value="true" /> -->
 <!--this helps reduce the SCD size by ~30 MB - https://github.com/dotnet/corefx/blob/master/Documentation/architecture/globalization-invariant-mode.md-->

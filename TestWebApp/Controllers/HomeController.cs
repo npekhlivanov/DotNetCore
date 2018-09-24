@@ -8,6 +8,8 @@ using Microsoft.AspNetCore.Mvc;
 using TestWebApp.Models;
 //#if !DEBUG
 using Unosquare.RaspberryIO;
+using Unosquare.RaspberryIO.Camera;
+using Unosquare.RaspberryIO.Computer;
 using Unosquare.RaspberryIO.Gpio;
 //#endif
 
@@ -22,18 +24,28 @@ namespace TestWebApp.Controllers
 
         public IActionResult About()
         {
-#if DEBUG
-            ViewData["Message"] = "System information not available in Debug mode";
-            return View();
-#else
-            ViewData["Message"] = "System information";
             AboutViewModel viewModel = new AboutViewModel
             {
-                RaspberryPiInfo = Pi.Info
-            };
-            return View(viewModel);
+                ModelInfo = AdditionalSystemInfo.GetModelInfo(),
+                CpuTemperature = AdditionalSystemInfo.GetCpuTemperature()
+           };
+
+#if DEBUG
+            ViewData["Message"] = "System information not available in Debug mode";
+            viewModel.HostName = "Unknown";
+            viewModel.RaspberryPiInfo = SystemInfo.Instance;
+            viewModel.NetworkAdapterData = new List<NetworkAdapterInfo>();
+
+#else
+            ViewData["Message"] = "System information";
+            viewModel.HostName = NetworkSettings.Instance.HostName;
+            viewModel.RaspberryPiInfo = Pi.Info;
+            viewModel.NetworkAdapterData = NetworkSettings.Instance.RetrieveAdapters();
 #endif
+
+            return View(viewModel);
         }
+
 
         public IActionResult Contact()
         {
@@ -75,6 +87,47 @@ namespace TestWebApp.Controllers
 #endif
 
             return View("Contact");
+        }
+
+        public IActionResult Image()
+        {
+            return View();
+        }
+
+        public IActionResult CaptureImage()
+        {
+            if (Pi.Camera.IsBusy)
+            {
+                ViewData["Message"] = "Camera is busy!";
+                return View();
+            }
+
+            var pin = Pi.Gpio.Pin21;
+            pin.PinMode = GpioPinDriveMode.Output;
+            pin.Write(true);
+
+            CameraStillSettings settings = new CameraStillSettings
+            {
+                CaptureWidth = 640, // default
+                CaptureHeight = 480, // default
+                ImageFlipVertically = true,
+                CaptureTimeoutMilliseconds = 900, // default for CaptureImageJpeg = 300 (min value recommended)
+                //CaptureEncoding = CameraImageEncodingFormat.Jpg, // default
+                CaptureJpegQuality = 95
+            };
+            
+            var imageBytes = Pi.Camera.CaptureImage(settings);
+            var targetPath = "./wwwroot/picture.jpg";
+            if (System.IO.File.Exists(targetPath))
+            {
+                System.IO.File.Delete(targetPath);
+            }
+            System.IO.File.WriteAllBytes(targetPath, imageBytes);
+
+            pin.Write(false);
+            ViewData["Message"] = "Image captured.";
+
+            return View("Image");
         }
 
         public IActionResult Privacy()

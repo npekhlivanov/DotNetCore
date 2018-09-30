@@ -1,10 +1,8 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
 using TestWebApp.Models;
 //#if !DEBUG
 using Unosquare.RaspberryIO;
@@ -46,8 +44,7 @@ namespace TestWebApp.Controllers
             return View(viewModel);
         }
 
-
-        public IActionResult Contact()
+        public IActionResult Control()
         {
             ViewData["LedState"] = true.ToString();
 
@@ -56,7 +53,7 @@ namespace TestWebApp.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Contact(bool ledState/*IFormCollection formCollection*/)
+        public IActionResult Control(bool ledState/*IFormCollection formCollection*/)
         // if Html.CheckBox("ledState") is used in the view, it generates a hidden input with id="ledState" and value "false"
         // if <input type="checkbox" name="ledState" ...> is used, there is no default value and ledState is null if unchecked
         {
@@ -91,10 +88,42 @@ namespace TestWebApp.Controllers
 
         public IActionResult Image()
         {
-            return View();
+            var viewModel = new ImageViewModel()
+            {
+                ImageEncoding = "jpg",
+                Resolution = ImageViewModel.CameraResolution._1024x768,
+                CaptureTimeoutMilliseconds = 500
+            };
+            return View(viewModel);
         }
 
-        public IActionResult CaptureImage()
+        // 3280x2464 - 8MP?, or 3264x2448; 640x480 - 0.3 Megapixel; 1280x960 - 1MP; 1600x1200 - 2MP; 2560x1920 - 5MP
+        private readonly int[] resolutionWidths = { 640, 1024, 1280, 1600, 2560 };
+        private readonly int[] resolutionHeights = { 480, 768, 960, 1200, 1920 };
+
+        private void ViewModelToCameraSettings(ImageViewModel viewModel, ref CameraStillSettings cameraSettings)
+        {
+            cameraSettings.CaptureWidth = resolutionWidths[(int)viewModel.Resolution];
+            cameraSettings.CaptureHeight = resolutionHeights[(int)viewModel.Resolution];
+            cameraSettings.CaptureTimeoutMilliseconds = viewModel.CaptureTimeoutMilliseconds;
+            switch (viewModel.ImageEncoding)
+            {
+                case "jpg":
+                    {
+                        cameraSettings.CaptureEncoding = CameraImageEncodingFormat.Jpg;
+                        break;
+                    }
+                case "png":
+                    {
+                        cameraSettings.CaptureEncoding = CameraImageEncodingFormat.Png;
+                        break;
+                    }
+            }
+        }
+
+        [HttpPost]
+        [ActionName("Image")]
+        public IActionResult CaptureImage(ImageViewModel viewModel)
         {
             if (Pi.Camera.IsBusy)
             {
@@ -106,28 +135,41 @@ namespace TestWebApp.Controllers
             pin.PinMode = GpioPinDriveMode.Output;
             pin.Write(true);
 
-            CameraStillSettings settings = new CameraStillSettings
+            // Prepare the camera settings object, getting the values from the ViewModel
+            CameraStillSettings cameraSettings = new CameraStillSettings
             {
-                CaptureWidth = 640, // default
-                CaptureHeight = 480, // default
-                ImageFlipVertically = true,
                 CaptureTimeoutMilliseconds = 900, // default for CaptureImageJpeg = 300 (min value recommended)
+                ImageFlipVertically = true,
                 //CaptureEncoding = CameraImageEncodingFormat.Jpg, // default
                 CaptureJpegQuality = 95
             };
+            ViewModelToCameraSettings(viewModel, ref cameraSettings);
             
-            var imageBytes = Pi.Camera.CaptureImage(settings);
-            var targetPath = "./wwwroot/picture.jpg";
-            if (System.IO.File.Exists(targetPath))
-            {
-                System.IO.File.Delete(targetPath);
-            }
-            System.IO.File.WriteAllBytes(targetPath, imageBytes);
+            // Take the picture with the camera settings and get image as bytes
+            var imageBytes = Pi.Camera.CaptureImage(cameraSettings);
+
+            // Encode the bytes to base64 and store in ViewModel
+            var base64string = Convert.ToBase64String(imageBytes);
+            viewModel.ImageData = base64string;
+
+            //var targetPath = "./wwwroot/picture.jpg";
+            //if (System.IO.File.Exists(targetPath))
+            //{
+            //    System.IO.File.Delete(targetPath);
+            //}
+            //System.IO.File.WriteAllBytes(targetPath, imageBytes);
 
             pin.Write(false);
             ViewData["Message"] = "Image captured.";
 
-            return View("Image");
+            return View(viewModel);
+        }
+
+        public IActionResult Video()
+        {
+            ViewData["Message"] = "Playing video";
+
+            return View();
         }
 
         public IActionResult Privacy()

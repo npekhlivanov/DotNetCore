@@ -11,7 +11,12 @@ namespace TestWebApp.Services
             switch (name)
             {
                 case "video":
-                    fileName = @"D:\Projects\Others\R-Pi\RemoteFiles\video.h264";
+                    var inputfileName = @"D:\Projects\Others\R-Pi\RemoteFiles\video-h264";
+                    fileName = @"D:\Projects\Others\R-Pi\RemoteFiles\video-mp4";
+                    using (var ffmpeg = new FfmpegWrapper())
+                    {
+                        ffmpeg.ConvertFile(inputfileName, fileName);
+                    }
                     break;
                 case "nature":
                 default:

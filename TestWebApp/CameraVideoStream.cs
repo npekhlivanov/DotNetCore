@@ -46,7 +46,7 @@ namespace TestWebApp
 
 #if DEBUG
             Pi.Camera.OpenVideoStream(cameraSettings, 
-            onDataCallback: (byte[] data) =>
+                onDataCallback: (byte[] data) =>
                 {
                     if (IsActive && _stream.CanWrite)
                     {

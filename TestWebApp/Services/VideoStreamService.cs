@@ -13,9 +13,16 @@ namespace TestWebApp.Services
                 case "video":
                     var inputfileName = @"D:\Projects\Others\R-Pi\RemoteFiles\video-h264";
                     fileName = @"D:\Projects\Others\R-Pi\RemoteFiles\video-mp4";
-                    using (var ffmpeg = new FfmpegWrapper())
+                    using (var logFile = new StreamWriter("FFMpegLog.txt"))
                     {
-                        ffmpeg.ConvertFile(inputfileName, fileName);
+                        using (var ffmpeg = new FfmpegWrapper())
+                        {
+                            using (var inputStream = new FileStream(inputfileName, FileMode.Open))
+                                ffmpeg.ConvertStream(inputStream, fileName, logFile);
+                                //ffmpeg.ConvertFile(inputfileName, fileName, logFile);
+                        }
+
+                        logFile.Flush();
                     }
                     break;
                 case "nature":

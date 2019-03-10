@@ -1,11 +1,33 @@
 ﻿
 @{
-    ViewData["Title"] = "Video";
+	ViewData["Title"] = "Video";
 }
 
 <h2>@ViewData["Title"]</h2>
 
-<video controls autoplay="autoplay" id="video1" width="960">
-    <source src="@Url.Action("video", "api/streaming", new { @name = "nature"})" type="video/mp4">
-    Your browser does not support HTML5 video.
-</video> 
+@*<video controls autoplay="autoplay" id="video1" width="960">
+		<source src="@Url.Action("video", "api/streaming", new { @name = "nature"})" type="video/mp4">
+		Your browser does not support HTML5 video.
+	</video>*@
+<canvas id="videoCanvas" width="640" height="480">
+	<p>
+
+		Please use a browser that supports the Canvas Element, like
+		<a href="http://www.google.com/chrome">Chrome</a>,
+		<a href="http://www.mozilla.com/firefox/">Firefox</a>,
+		<a href="http://www.apple.com/safari/">Safari</a> or Internet Explorer 10
+	</p>
+</canvas>
+
+<script type="text/javascript" src="~/js/jsmpg.js"></script>
+<script type="text/javascript">// Show loading notice
+		var canvas = document.getElementById('videoCanvas');
+		var ctx = canvas.getContext('2d');
+	ctx.fillStyle = '#444';
+		ctx.fillText('Loading...', canvas.width/2-30, canvas.height/3);
+
+		// Setup the WebSocket connection and start the player
+    var client = new XMLHttpRequest();
+    client.open('GET', 'https://localhost:44327/api/streaming/video');
+	var player = new jsmpeg(client, { canvas: canvas });
+</script>

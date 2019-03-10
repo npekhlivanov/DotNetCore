@@ -52,20 +52,20 @@ namespace TestWebApp
             }
         }
 
-        public bool ConvertStream(Stream inputStream, string outputFile, StreamWriter logWriter)
+        public bool ConvertStream(/*Stream inputStream*/string inputFile, Stream outputStream, StreamWriter logWriter)
         {
-            if (inputStream == null)
+            if (!File.Exists(inputFile))
             {
                 throw new ArgumentNullException("input stream must be assigned!");
             }
 
-            if (string.IsNullOrEmpty(outputFile))
+            if (outputStream == null)
             {
-                throw new ArgumentNullException("output file name must be specified!");
+                throw new ArgumentNullException("output stream must be assigned!");
             }
 
-            var inputArgs = "-f h264 -i -"; // must be -r 20; consider using -nostdin; replace -video_size with -s:v 1920x1080
-            var outputArgs = $"-f mp4 -r 20 \"{outputFile}\" -y";
+            var inputArgs = $"-f h264 -i \"{inputFile}\""; // must be -r 20; consider using -nostdin; replace -video_size with -s:v 1920x1080
+            var outputArgs = $"-f h264 -f mpeg1video -b:v 5M -";
             //var inputArgs = "-framerate 20 -f rawvideo -pix_fmt rgb32 -video_size 1920x1080 -i -"; must be -r 20; consider using -nostdin; replace -video_size with -s:v 1920x1080
             //var outputArgs = "-vcodec libx264 -crf 23 -pix_fmt yuv420p -preset ultrafast -r 20 out.mp4";
 
@@ -74,7 +74,10 @@ namespace TestWebApp
                {
                    if (e.Data != null)
                    {
-                       WriteToLog(e.Data, logWriter);
+                       var bytes = System.Text.Encoding.ASCII.GetBytes(e.Data);
+                       outputStream.Write(bytes);
+                       outputStream.Flush();
+                       //WriteToLog(e.Data, logWriter);
                    }
                },
                (object sendingProcess, DataReceivedEventArgs e) =>
@@ -91,10 +94,11 @@ namespace TestWebApp
             );
             try
             {
+                //_process.StandardOutput.Read( = outputStream;
                 Started = _process.Start();
 
                 var ffmpegIn = _process.StandardInput.BaseStream;
-                inputStream.CopyTo(ffmpegIn, 16384); // freezes here
+                //inputStream.CopyTo(ffmpegIn); // freezes here
                 //ffmpegIn.Flush();
                 
                 // Start the asynchronous read of the output stream
@@ -102,7 +106,9 @@ namespace TestWebApp
                 // Start the asynchronous read of the standard error stream
                 _process.BeginErrorReadLine();
                 _process.WaitForExit(3000);
-                //Thread.Sleep(500);
+                //_process.StandardOutput.BaseStream.FlushAsync().Wait();
+                Thread.Sleep(1500);
+                outputStream.Flush();
             }
             catch (Exception e)
             {

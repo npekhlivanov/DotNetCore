@@ -1,0 +1,22 @@
+[h264 @ 000000e2c899bb40] Stream #0: not enough frames to estimate rate; consider increasing probesize
+Input #0, h264, from 'D:\Projects\Others\R-Pi\RemoteFiles\video-h264':
+  Duration: N/A, bitrate: N/A
+    Stream #0:0: Video: h264 (High), yuv420p(progressive), 1920x1080, 25 fps, 25 tbr, 1200k tbn, 50 tbc
+Stream mapping:
+  Stream #0:0 -> #0:0 (h264 (native) -> mpeg1video (native))
+Press [q] to stop, [?] for help
+Output #0, mpeg1video, to 'pipe:':
+  Metadata:
+    encoder         : Lavf58.18.104
+    Stream #0:0: Video: mpeg1video, yuv420p, 1920x1080, q=2-31, 5000 kb/s, 25 fps, 25 tbn, 25 tbc
+    Metadata:
+      encoder         : Lavc58.32.100 mpeg1video
+    Side data:
+      cpb: bitrate max/min/avg: 0/0/5000000 buffer size: 0 vbv_delay: -1
+frame=   42 fps=0.0 q=19.7 size=    1182kB time=00:00:01.60 bitrate=6049.5kbits/s speed=3.19x    
+frame=   97 fps= 96 q=6.6 size=    2312kB time=00:00:03.80 bitrate=4983.8kbits/s speed=3.78x    
+frame=  148 fps= 98 q=6.2 size=    3559kB time=00:00:05.84 bitrate=4992.7kbits/s speed=3.87x    
+frame=  197 fps= 98 q=6.3 size=    4775kB time=00:00:07.80 bitrate=5014.5kbits/s speed=3.87x    
+frame=  251 fps=100 q=6.1 size=    6096kB time=00:00:09.96 bitrate=5014.0kbits/s speed=3.95x    
+frame=  293 fps=101 q=6.2 Lsize=    7165kB time=00:00:11.68 bitrate=5025.2kbits/s speed=4.02x    
+video:7165kB audio:0kB subtitle:0kB other streams:0kB global headers:0kB muxing overhead: 0.000000%

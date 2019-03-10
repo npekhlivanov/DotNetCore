@@ -73,6 +73,7 @@ namespace TestWebApp
     }
 
     /*
+     * https://github.com/unosquare/raspberryio/blob/master/README.md#capturing-video
      * https://github.com/waveform80/pistreaming
      * https://github.com/waveform80/pistreaming/blob/master/server.py
      * The BroadcastOutput class is an implementation of a picamera custom output. On initialization it starts a background FFmpeg process (avconv) which is configured 
@@ -138,6 +139,10 @@ self.converter.wait()
                     UpdateConvertedVideoDetails(input,output);
             }
         }
+
+    To access local camera, use Windows.Media? UWP?
+
+    FileStreamResult File(Stream fileStream, String contentType, String fileDownloadName, Boolean enableRangeProcessing)
 
      */
 }

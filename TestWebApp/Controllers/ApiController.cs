@@ -18,6 +18,7 @@ namespace TestWebApp.Controllers
         public FileStreamResult Get(string name)
         {
             var stream = _streamService.GetVideoByName(name);
+            stream.Position = 0;
             return new FileStreamResult(stream, "video/mp4");
         }
     }
